@@ -64,7 +64,7 @@ way for a recursive resolver to know that a given authoritative
 resolver supports encrypted transport, which inhibits the deployment
 of encryped DNS for queries from recursive resolvers. This specification
 defines a mechanism for carrying that signal, using the
-DNS SVCB {{SVCB=!I-D.ietf-dnsop-svcb-https}} record.
+DNS SVCB {{?SVCB=I-D.ietf-dnsop-svcb-https}} record.
 
 
 
@@ -109,7 +109,7 @@ for .com and asks for the NS records for example.com.
 [[OPEN ISSUE: Is this right?]]
 The
 authoritative returns the NS record pointing at ns.example.invalid and
-also returns a glue records for ns.example.invalid 
+also returns a glue records for ns.example.invalid
 indicating that it supports DNS over
 TLS (DoT), in much the same way as it might have sent an
 IP address for that server.
