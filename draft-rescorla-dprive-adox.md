@@ -67,7 +67,6 @@ defines a mechanism for carrying that signal, using the
 DNS SVCB {{?SVCB=I-D.ietf-dnsop-svcb-https}} record.
 
 
-
 # Conventions and Definitions
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
@@ -150,6 +149,26 @@ SHOULD try all of them before declaring failure.
 
 
 ## Caching and lifetime
+
+Note that in the common case where the name of the target
+authoritative resolver is out-of-bailiwick {{?RFC7719}} for the
+referring resolver, then the SVCB record will likely not be retained
+for future queries. This can create a situation in which a given
+authoritative resolver will be queried over encrypted transport for
+one name and over unencrypted transport for another. This is not the
+end of the world (HTTPS has historically operated in this way, with
+the security properties being attached to the reference), but is also
+not ideal. In order to prevent this, resolvers which are also
+authoritative for their own name SHOULD send SVCB records back
+for themselves in the additional data section so that they can
+be properly cached.
+
+[[OPEN ISSUE: Do people cache out-of-bailiwick DNSSEC-signed records?]]
+[[OPEN ISSUE: How often is the case where ns.example.invalid is not
+authoritative for itself? Should we encourage people to accept out-of-bailiwick
+responses in that case?]]
+
+
 
 TODO:
 - How is caching handled now for the IP addresses
