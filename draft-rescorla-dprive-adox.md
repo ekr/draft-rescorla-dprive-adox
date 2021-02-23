@@ -178,7 +178,7 @@ using the procedures associated with the relevant protocol,
 The primary security property delivered by this mechanism is
 confidentiality of the query and response. As long as (1) All queries
 in the resolution chain, including to the authoritative resolver are
-encrypted and (1) All resolvers in the resolution chain are
+encrypted and (2) All resolvers in the resolution chain are
 trustworthy, then even an on-path attacker cannot discover the
 name being resolved or its response. However, if either of these conditions
 is violated, then an attack is possible:
