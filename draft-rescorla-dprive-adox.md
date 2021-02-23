@@ -125,8 +125,8 @@ ns.example.invalid could be reached by either DoT or DoH (over
 both TCP and QUIC).
 
 ~~~~
-   _dns.ns.example.invalid 7200 IN SVCB 1 . alpn=dot
-   _dns.ns.example.invalid 7200 IN SVCB 1 . alpn=h2,h3 dohpath=/dns-query{?dns}
+   ns.example.invalid 7200 IN SVCB 1 . alpn=dot
+   ns.example.invalid 7200 IN SVCB 1 . alpn=h2,h3 dohpath=/dns-query{?dns}
 ~~~~
 
 Upon determining that a given nameserver supports a compatible
