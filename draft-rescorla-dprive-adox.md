@@ -125,8 +125,8 @@ records. These records MUST contain the ALPN key, with one of
 the following values:
 
 |:value|:semantics|
-|dot|DNS over TLS as defined in {{RFC7858}}|
-|h2|DNS over HTTPS as defined in {{RFC8484}}|
+|dot|DNS over TLS as defined in {{DOT}}|
+|h2|DNS over HTTPS as defined in {{DOH}}|
 
 [[TODO: tokens for DoQ and DoHQ]]
 
