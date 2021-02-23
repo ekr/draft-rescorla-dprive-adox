@@ -58,13 +58,13 @@ authoritative DNS server is reachable by encrypted DNS.
 # Introduction
 
 The IETF has defined a number of mechanisms for carrying DNS queries
-over encrypted transport {{!RFC8484}} {{!RFC7858}}
-{{?I-D.ietf-dprive-dnsoquic}}. However, there is no scalable
+over encrypted transport {{!DOH=RFC8484}} {{!DOT=RFC7858}}
+{{?DOQ=I-D.ietf-dprive-dnsoquic}}. However, there is no scalable
 way for a recursive resolver to know that a given authoritative
 resolver supports encrypted transport, which inhibits the deployment
 of encryped DNS for queries from recursive resolvers. This specification
 defines a mechanism for carrying that signal, using the
-DNS SVCB {{!I-D.ietf-dnsop-svcb-https}} record.
+DNS SVCB {{SVCB=!I-D.ietf-dnsop-svcb-https}} record.
 
 
 
@@ -77,10 +77,19 @@ when, and only when, they appear in all capitals, as shown here.
 
 # Overview of Operation
 
-The mechanism defined in this document works by placing an additional set
-of glue records at the referring resolver. These records allow the recursive
-resolver to learn that the servers associated with the NS records it receives
-also support encrypted transport, as shown below:
+The mechanism defined in this document works by using the DNS SVCB
+{{SVCB}} record to indicate that a given server supports TLS. The
+recursive resolver can obtain these records in two distinct ways:
+
+- In the additional data block of the response that referred
+  the recursive to the target authoritative resolver.
+- By directly resolving a SVCB query for the target authoritative
+  resolver.
+
+As a practical matter, the first of these options is preferred
+as it allows the recursive to learn that the authoritative
+server supports encrypted transport without an additional round
+trip, as shown below:
 
 ~~~~
 Recursive                .com                      ns.example.invalid
@@ -100,9 +109,11 @@ for .com and asks for the NS records for example.com.
 [[OPEN ISSUE: Is this right?]]
 The
 authoritative returns the NS record pointing at ns.example.invalid and
-also returns two glue records for ns.example.invalid: an A record with
-its IP address and a SVCB record indicating that it supports DNS over
-TLS (DoT). This additional record is the only difference from the
+also returns a glue records for ns.example.invalid 
+indicating that it supports DNS over
+TLS (DoT), in much the same way as it might have sent an
+IP address for that server.
+This additional record is the only difference from the
 current situation, and allows the recursive resolver to know that
 it can reach ns.example.invalid over encrypted transport.
 
