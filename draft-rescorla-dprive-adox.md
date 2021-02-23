@@ -130,13 +130,12 @@ measure?]]
 Any given authoritative server name can have one or more DNS Server
 SVCB records, as defined in {{?I-D.schwartz-svcb-dns}}.
 
-For instance, the following pair of records would indicate that
+For instance, the following records would indicate that
 ns.example.example could be reached by either DoT or DoH (over
 both TCP and QUIC).
 
 ~~~~
-   ns.example.example 7200 IN SVCB 1 . alpn=dot
-   ns.example.example 7200 IN SVCB 1 . alpn=h2,h3 dohpath=/dns-query{?dns}
+   _dns.ns.example.example. 7200 IN SVCB 1 ns.example.example. alpn=dot,h2,h3 dohpath=/dns-query{?dns}
 ~~~~
 
 Upon determining that a given nameserver supports a compatible
