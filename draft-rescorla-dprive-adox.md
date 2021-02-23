@@ -160,18 +160,35 @@ authoritative for itself? Should we encourage people to accept out-of-bailiwick
 responses in that case?]]
 
 
-
-TODO:
-- How is caching handled now for the IP addresses
-- Do you apply it to other NS records?
-- You can't just allow later glue to override earlier glue.
-
-
 ## Authenticating the Server
 
-Recursive servers MUST authenticate the authoritative server
-using the procedures associated with the relevant protocol,
-{{!RFC6125}} and {{!RFC2818}} for DoT and DoH respectively.
+Recursive servers MUST authenticate the authoritative server using the
+procedures associated with the relevant protocol, {{!RFC6125}} and
+{{!RFC2818}} for DoT and DoH respectively. This is in principle
+compatible with having the server authenticated either with the WebPKI
+or with TLSA records {{!DANE=RFC6698}}, or both. In order for this to
+work properly, however, the recursive resolver must know at the
+time it connects whether it will be willing to accept the authoritative
+server's credentials.
+
+This can be addressed in several ways:
+
+1. Require a particular form of authentication (e.g., the WebPKI or
+   TLSA records) as mandatory.
+1. Have the SVCB record indicate what kind(s) of authentication the
+   authoritative resolver supports, allowing the recursive to filter
+   out incompatible advertisements.
+
+One challenge with TLSA records in this context is that they may
+not be in the recursive resolver's cache at the time when it wants
+to connect to the authoritative. This can create added latency
+if the recursive resolver must then first retrieve TLSA records
+for the authoritative. If we wish for servers to authenticate
+with DANE, we will also probably want some mechanism to carry
+the TLSA records in the TLS handshake, as, for instance
+defined in {{?I-D.ietf-tls-dnssec-chain-extension}}.
+
+[[OPEN ISSUE: Resolve this.]]
 
 # Security Considerations
 
