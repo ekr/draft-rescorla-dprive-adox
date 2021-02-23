@@ -119,7 +119,7 @@ NS example.com? ------------>
 
 <----- example.com NS ns.example.invalid
        ns.example.invalid A 192.0.2.1
-       ns.example.invalid SVCB <DoT>
+       _dns.ns.example.invalid SVCB alpn=dot
 
 <--------------  TLS connection to ns.example ------------>
 A example.com? ------------------------------------------->
@@ -136,30 +136,15 @@ A example.com? ------------------------------------------->
 
 4.  Use of SVCB Records to Signal Encrypted Transport
 
-   Any given authoritative resolver name can have one or more SVCB
-   records.  These records MUST contain the ALPN key, with one of the
-   following values:
-
-              +========+====================================+
-              | :value | :semantics                         |
-              +========+====================================+
-              | dot    | DNS over TLS as defined in [DOT]   |
-              +--------+------------------------------------+
-              | h2     | DNS over HTTPS as defined in [DOH] |
-              +--------+------------------------------------+
-
-                                  Table 1
-
-   [[TODO: tokens for DoQ and DoHQ]]
+   Any given authoritative resolver name can have one or more DNS Server
+   SVCB records, as defined in [I-D.schwartz-svcb-dns].
 
    For instance, the following pair of records would indicate that
-   ns.example.invalid could be reached by either DoT or DoH but prefers
-   DoT.
+   ns.example.invalid could be reached by either DoT or DoH (over both
+   TCP and QUIC).
 
-      IN SVCB 0 ns.example.invalid alpn=dot
-      IN SVCB 1 ns.example.invalid alpn=h2
-
-   [[TODO: Tommy, can you fill in if this is wrong?]].
+   _dns.ns.example.invalid 7200 IN SVCB 1 . alpn=dot
+   _dns.ns.example.invalid 7200 IN SVCB 1 . alpn=h2,h3 dohpath=/dns-query{?dns}
 
    Upon determining that a given nameserver supports a compatible
    encrypted transport, an implementation MUST only use encrypted
@@ -169,6 +154,24 @@ A example.com? ------------------------------------------->
    implementation SHOULD try all of them before declaring failure.
 
 4.1.  Caching and lifetime
+
+   Note that in the common case where the name of the target
+   authoritative resolver is out-of-bailiwick [RFC7719] for the
+   referring resolver, then the SVCB record will likely not be retained
+   for future queries.  This can create a situation in which a given
+   authoritative resolver will be queried over encrypted transport for
+   one name and over unencrypted transport for another.  This is not the
+   end of the world (HTTPS has historically operated in this way, with
+   the security properties being attached to the reference), but is also
+   not ideal.  In order to prevent this, resolvers which are also
+   authoritative for their own name SHOULD send SVCB records back for
+   themselves in the additional data section so that they can be
+   properly cached.
+
+   [[OPEN ISSUE: Do people cache out-of-bailiwick DNSSEC-signed
+   records?]] [[OPEN ISSUE: How often is the case where
+   ns.example.invalid is not authoritative for itself?  Should we
+   encourage people to accept out-of-bailiwick responses in that case?]]
 
    TODO: - How is caching handled now for the IP addresses - Do you
    apply it to other NS records? - You can't just allow later glue to
@@ -228,6 +231,17 @@ A example.com? ------------------------------------------->
               Internet-Draft, draft-ietf-dprive-dnsoquic-02, 22 February
               2021, <https://datatracker.ietf.org/doc/html/draft-ietf-
               dprive-dnsoquic-02.txt>.
+
+   [I-D.schwartz-svcb-dns]
+              Schwartz, B., "Service Binding Mapping for DNS Servers",
+              Work in Progress, Internet-Draft, draft-schwartz-svcb-dns-
+              02, 17 February 2021,
+              <https://datatracker.ietf.org/doc/html/draft-schwartz-
+              svcb-dns-02.txt>.
+
+   [RFC7719]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
+              Terminology", RFC 7719, DOI 10.17487/RFC7719, December
+              2015, <https://datatracker.ietf.org/doc/html/rfc7719>.
 
    [SVCB]     Schwartz, B., Bishop, M., and E. Nygren, "Service binding
               and parameter specification via the DNS (DNS SVCB and
