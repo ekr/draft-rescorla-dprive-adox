@@ -89,7 +89,7 @@ NS example.com? ------------>
 
 <----- example.com NS ns.example.invalid
        ns.example.invalid A 192.0.2.1
-       ns.example.invalid SVCB <DoT>
+       _dns.ns.example.invalid SVCB alpn=dot
 
 <--------------  TLS connection to ns.example ------------>
 A example.com? ------------------------------------------->
@@ -109,26 +109,17 @@ it can reach ns.example.invalid over encrypted transport.
 
 # Use of SVCB Records to Signal Encrypted Transport
 
-Any given authoritative resolver name can have one or more SVCB
-records. These records MUST contain the ALPN key, with one of
-the following values:
-
-|:value|:semantics|
-|dot|DNS over TLS as defined in {{RFC7858}}|
-|h2|DNS over HTTPS as defined in {{RFC8484}}|
-
-[[TODO: tokens for DoQ and DoHQ]]
+Any given authoritative resolver name can have one or more DNS Server
+SVCB records, as defined in {{?I-D.schwartz-svcb-dns}}.
 
 For instance, the following pair of records would indicate that
 ns.example.invalid could be reached by either DoT or DoH
 but prefers DoT.
 
 ~~~~
-   IN SVCB 0 ns.example.invalid alpn=dot
-   IN SVCB 1 ns.example.invalid alpn=h2
+   _dns.ns.example.invalid 7200 IN SVCB 1 . alpn=dot
+   _dns.ns.example.invalid 7200 IN SVCB 1 . alpn=h2,h3 dohpath=/dns-query{?dns}
 ~~~~
-
-[[TODO: Tommy, can you fill in if this is wrong?]].
 
 Upon determining that a given nameserver supports a compatible
 encrypted transport, an implementation MUST only use encrypted
