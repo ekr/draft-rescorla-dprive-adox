@@ -134,9 +134,7 @@ encrypted transport, an implementation MUST only use encrypted
 transport for the rest of the cache lifetime for that information
 and MUST hard fail with error if it is unable to establish a connection.
 If multiple encrypted transports are available, an implementation
-SHOULD try all of them before declaring failure. An implementation
-MUST NOT consider an answer authentic unless it is either signed
-via DNSSEC or received over an encrypted transport.
+SHOULD try all of them before declaring failure.
 
 [[OPEN ISSUE: figure out error details]]
 
@@ -205,20 +203,35 @@ is violated, then an attack is possible:
 - If the connection to the authoritative resolver is not encrypted,
   then the request and response can be read directly.
 - If one of the earlier connections is not encrypted, then the
-  attacker can substitute their own NS records or strip SVCB
+  attacker can substitute their own NS records.
   records from the additional_data, forcing the resolution back to unencrypted mode.
 - If one of the resolvers is untrustworthy, then they can
-  sending SVCB records or substitute their own NS records.
+  substitute their own NS records.
 
-Note: DNSSEC signing might mitigate some these issues, but it is
-undesirable to have a system which depends on universal DNSSEC.
-Moreover, delegations at top-level zones are not signed, as
-per {{?RFC4035}}, Section 2.2. In practice, this means a recursive
-resolver attempting to resolve a zone apex query, such as example.com
-in {{overview}}, cannot assume the NS answer is authentic. However,
-given the number of top-level domain servers, resolvers may use an
-HSTS-like mechanism for determining whether which top-level servers
-support encrypted transports.
+DNSSEC signing only partly mitigates these issues because delegations
+at top-level zones are not signed, as per {{?RFC4035}}, Section
+2.2. In practice, this means a recursive resolver attempting to
+resolve a zone apex query, such as example.com in {{overview}}, cannot
+assume the NS answer is authentic. While NS records received from the
+authoritative server may be signed, in order to retrieve them, the
+recursive resolver will have to contact the servers listed by the
+unverified NS records received from the referring server, at which
+point it has leaked the zone apex to the (potentially fake)
+authoritative server (as well as to the referring server).
+
+If the recursive resolver is attempting to resolve a specific
+subdomain from the resolver (e.g., server-1234.example.com), then it
+may be able to protect against this attack by (1) using query
+minimization {{?QMIN=RFC7816}} and (2) querying the (alleged)
+authoritative for its DNSSEC-signed NS and SVCB records
+and only once it has received those, attempting to retrieve
+the actual subdomain. If the domain is DNSSEC signed, then
+this prevents a malicious referring resolver from redirecting
+the recursive resolver to their own authoritative and learning
+the true subdomain. However, if, as is common, the recursive
+is just trying to resolve the apex name or one of the common
+"service" names such as "www.example.com", then this procedure
+does not provide additional protection.
 
 Encryption does not mitigate all leakage. In some circumstances, an
 on-path attacker may learn the identity of the authoritative server if,
