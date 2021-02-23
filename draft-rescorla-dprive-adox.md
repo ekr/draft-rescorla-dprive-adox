@@ -91,13 +91,13 @@ server supports encrypted transport without an additional round
 trip, as shown below:
 
 ~~~~
-Recursive                .com                      ns.example.invalid
+Recursive                .com                      ns.example.example
                    Authoritative Server      (Authoritative for example.com)
 NS example.com? ------------>
 
-<----- example.com NS ns.example.invalid
-       ns.example.invalid A 192.0.2.1
-       _dns.ns.example.invalid SVCB alpn=dot
+<----- example.com NS ns.example.example
+       ns.example.example A 192.0.2.1
+       _dns.ns.example.example SVCB alpn=dot
 
 <--------------  TLS connection to ns.example ------------>
 A example.com? ------------------------------------------->
@@ -107,12 +107,12 @@ The recursive resolver starts by contacting the authoritative server
 for .com and asks for the NS records for example.com. Note that .com
 is not authoritative for the example.com apex, and will not sign the
 NS RRset; see {{?RFC4035}}, Section 2.2, and {{security}} for details.
-The authoritative returns the NS record pointing at ns.example.invalid and
-also returns a glue records for ns.example.invalid indicating that it
+The authoritative returns the NS record pointing at ns.example.example and
+also returns a glue records for ns.example.example indicating that it
 supports DNS over TLS (DoT), in much the same way as it might have sent an
 IP address for that server. This additional record is the only difference
 from the current situation, and allows the recursive resolver to know that
-it can reach ns.example.invalid over encrypted transport.
+it can reach ns.example.example over encrypted transport.
 
 
 # Use of SVCB Records to Signal Encrypted Transport
@@ -121,12 +121,12 @@ Any given authoritative resolver name can have one or more DNS Server
 SVCB records, as defined in {{?I-D.schwartz-svcb-dns}}.
 
 For instance, the following pair of records would indicate that
-ns.example.invalid could be reached by either DoT or DoH (over
+ns.example.example could be reached by either DoT or DoH (over
 both TCP and QUIC).
 
 ~~~~
-   ns.example.invalid 7200 IN SVCB 1 . alpn=dot
-   ns.example.invalid 7200 IN SVCB 1 . alpn=h2,h3 dohpath=/dns-query{?dns}
+   ns.example.example 7200 IN SVCB 1 . alpn=dot
+   ns.example.example 7200 IN SVCB 1 . alpn=h2,h3 dohpath=/dns-query{?dns}
 ~~~~
 
 Upon determining that a given nameserver supports a compatible
@@ -155,7 +155,7 @@ and the TTL for these SVCB records SHOULD match that of the
 corresponding NS records in the same RRset.
 
 [[OPEN ISSUE: Do people cache out-of-bailiwick DNSSEC-signed records?]]
-[[OPEN ISSUE: How often is the case where ns.example.invalid is not
+[[OPEN ISSUE: How often is the case where ns.example.example is not
 authoritative for itself? Should we encourage people to accept out-of-bailiwick
 responses in that case?]]
 
@@ -195,28 +195,28 @@ defined in {{?I-D.ietf-tls-dnssec-chain-extension}}.
 A complete example is shown below.
 
 ~~~~
-Recursive  x.root-servers.org  ns.a.invalid         ns.example.invalid
-             (Auth. for .)     (Auth for .invalid)  (Auth for .example.invalid)
+Recursive  x.root-servers.org  ns.a.example         ns.example.example
+             (Auth. for .)     (Auth for .example)  (Auth for .example.example)
 
 <== TLS handshake ==>
-NS .invalid? ------->
-<- .invalid NS ns.op.invalid
-   ns.op.invalid A 198.51.100.1
-   _dns.ns.op.invalid SVCB alpn=dot
+NS .example? ------->
+<- .example NS ns.op.example
+   ns.op.example A 198.51.100.1
+   _dns.ns.op.example SVCB alpn=dot
 
 
 <============ TLS handshake ===========>
-NS example.invalid? ------------------->
-<----- example.invalid NS ns.example.invalid
-       ns.example.invalid A 203.0.113.1
-       _dns.ns.example.invalid SVCB alpn=dot
+NS example.example? ------------------->
+<----- example.example NS ns.example.example
+       ns.example.example A 203.0.113.1
+       _dns.ns.example.example SVCB alpn=dot
 
 <====================== TLS Handshake ======================>
-A www.example.invalid? ------------------------------------->
-<---------------------------- www.example.invalid A 192.0.2.1
+A www.example.example? ------------------------------------->
+<---------------------------- www.example.example A 192.0.2.1
 ~~~~
 
-In this case, the recursive wants to resolve www.example.invalid.
+In this case, the recursive wants to resolve www.example.example.
 
 Resolution proceeds in three phases.
 
@@ -224,21 +224,21 @@ Initially, the recursive connects to the root server. We assume that
 the recursive knows that the root server is able to do DoT, either
 because it has been preconfigured with his information or because it
 has connected to that root server before. It performs an NS query for
-".invalid" (we are assuming QMIN) and receives:
+".example" (we are assuming QMIN) and receives:
 
-- An NS record pointing to ns.op.invalid
-- A glue A record for ns.op.invalid = 198.51.100.1
-- A SVCB record stating that ns.op.invalid speaks DoT
+- An NS record pointing to ns.op.example
+- A glue A record for ns.op.example = 198.51.100.1
+- A SVCB record stating that ns.op.example speaks DoT
 
-Next, the recursive resolver forms a TLS connection to ns.op.invalid
-and requests an NS record for example.invalid. It receives:
+Next, the recursive resolver forms a TLS connection to ns.op.example
+and requests an NS record for example.example. It receives:
 
-- An NS record pointing to ns.example.invalid
-- A glue A record for ns.example.invalid = 203.0.113.1
-- A SVCB record stating that ns.example.invalid speaks DoT
+- An NS record pointing to ns.example.example
+- A glue A record for ns.example.example = 203.0.113.1
+- A SVCB record stating that ns.example.example speaks DoT
 
 Finally, the recursive resolver forms a TLS connection to
-ns.example.invalid and request an A record for www.example.invalid and
+ns.example.example and request an A record for www.example.example and
 receives the A record of 192.0.2.1.
 
 
