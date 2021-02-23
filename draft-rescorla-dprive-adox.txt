@@ -71,11 +71,12 @@ Table of Contents
    4.  Use of SVCB Records to Signal Encrypted Transport
      4.1.  Caching and lifetime
      4.2.  Authenticating the Server
-   5.  Security Considerations
-   6.  IANA Considerations
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   5.  Example
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -127,7 +128,7 @@ A example.com? ------------------------------------------->
    The recursive resolver starts by contacting the authoritative server
    for .com and asks for the NS records for example.com.  Note that .com
    is not authoritative for the example.com apex, and will not sign the
-   NS RRset; see [RFC4035], Section 2.2, and Section 5 for details.  The
+   NS RRset; see [RFC4035], Section 2.2, and Section 6 for details.  The
    authoritative returns the NS record pointing at ns.example.invalid
    and also returns a glue records for ns.example.invalid indicating
    that it supports DNS over TLS (DoT), in much the same way as it might
@@ -209,7 +210,60 @@ A example.com? ------------------------------------------->
 
    [[OPEN ISSUE: Resolve this.]]
 
-5.  Security Considerations
+5.  Example
+
+   A complete example is shown below.
+
+Recursive  x.root-servers.org  ns.a.invalid         ns.example.invalid
+             (Auth. for .)     (Auth for .invalid)  (Auth for .example.invalid)
+
+<== TLS handshake ==>
+NS .invalid? ------->
+<- .invalid NS ns.op.invalid
+   ns.op.invalid A 198.51.100.1
+   _dns.ns.op.invalid SVCB alpn=dot
+
+
+<============ TLS handshake ===========>
+NS example.invalid? ------------------->
+<----- example.invalid NS ns.example.invalid
+       ns.example.invalid A 203.0.113.1
+       _dns.ns.example.invalid SVCB alpn=dot
+
+<====================== TLS Handshake ======================>
+A www.example.invalid? ------------------------------------->
+<---------------------------- www.example.invalid A 192.0.2.1
+
+   In this case, the recursive wants to resolve www.example.invalid.
+
+   Resolution proceeds in three phases.
+
+   Initially, the recursive connects to the root server.  We assume that
+   the recursive knows that the root server is able to do DoT, either
+   because it has been preconfigured with his information or because it
+   has connected to that root server before.  It performs an NS query
+   for ".invalid" (we are assuming QMIN) and receives:
+
+   *  An NS record pointing to ns.op.invalid
+
+   *  A glue A record for ns.op.invalid = 198.51.100.1
+
+   *  A SVCB record stating that ns.op.invalid speaks DoT
+
+   Next, the recursive resolver forms a TLS connection to ns.op.invalid
+   and requests an NS record for example.invalid.  It receives:
+
+   *  An NS record pointing to ns.example.invalid
+
+   *  A glue A record for ns.example.invalid = 203.0.113.1
+
+   *  A SVCB record stating that ns.example.invalid speaks DoT
+
+   Finally, the recursive resolver forms a TLS connection to
+   ns.example.invalid and request an A record for www.example.invalid
+   and receives the A record of 192.0.2.1.
+
+6.  Security Considerations
 
    The primary security property delivered by this mechanism is
    confidentiality of the query and response.  As long as (1) all
@@ -264,13 +318,13 @@ A example.com? ------------------------------------------->
    that each resolver in the chain is trustworthy.  By contrast, DNSSEC
    provides integrity even if the resolvers are untrustworthy.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    This document has no IANA actions.
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [DANE]     Hoffman, P. and J. Schlyter, "The DNS-Based Authentication
               of Named Entities (DANE) Transport Layer Security (TLS)
@@ -306,7 +360,7 @@ A example.com? ------------------------------------------->
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://datatracker.ietf.org/doc/html/rfc8174>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [DOQ]      Huitema, C., Mankin, A., and S. Dickinson, "Specification
               of DNS over Dedicated QUIC Connections", Work in Progress,
