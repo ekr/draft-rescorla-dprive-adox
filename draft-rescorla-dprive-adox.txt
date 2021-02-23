@@ -86,7 +86,7 @@ Table of Contents
    over encrypted transport [DOH] [DOT] [DOQ].  However, there is no
    scalable way for a recursive resolver to know that a given
    authoritative resolver supports encrypted transport, which inhibits
-   the deployment of encryped DNS for queries from recursive resolvers.
+   the deployment of encrypted DNS for queries from recursive resolvers.
    This specification defines a mechanism for carrying that signal,
    using the DNS SVCB [SVCB] record.
 
@@ -105,7 +105,7 @@ Table of Contents
    recursive resolver can obtain these records in two distinct ways:
 
    *  In the additional data block of the response that referred the
-      recursive to the target authoritative resolver.
+      recursive to the target authoritative server.
 
    *  By directly resolving a SVCB query for the target authoritative
       resolver.
@@ -137,9 +137,14 @@ A example.com? ------------------------------------------->
    recursive resolver to know that it can reach ns.example.example over
    encrypted transport.
 
+   Note: SVCB is not presently permitted at the root [REGISTRY].  In the
+   interim, recursive resolvers may be preconfigured with the TLS status
+   of the resolvers for TLDs.  [[OPEN ISSUE: Do we want to invent some
+   other sentinel as a temporary measure?]]
+
 4.  Use of SVCB Records to Signal Encrypted Transport
 
-   Any given authoritative resolver name can have one or more DNS Server
+   Any given authoritative server name can have one or more DNS Server
    SVCB records, as defined in [I-D.schwartz-svcb-dns].
 
    For instance, the following pair of records would indicate that
@@ -161,23 +166,22 @@ A example.com? ------------------------------------------->
 4.1.  Caching and lifetime
 
    Note that in the common case where the name of the target
-   authoritative resolver is out-of-bailiwick [RFC7719] for the
-   referring resolver, then the SVCB record may not be retained for
-   future queries.  This can create a situation in which a given
-   authoritative resolver will be queried over encrypted transport for
-   one name and over unencrypted transport for another.  This is not the
-   end of the world (HTTPS has historically operated in this way, with
-   the security properties being attached to the reference), but is also
-   not ideal.  In order to prevent this, resolvers which are also
-   authoritative for their own name SHOULD send SVCB glue records in the
-   additional data section so that they can be properly cached, and the
-   TTL for these SVCB records SHOULD match that of the corresponding NS
-   records in the same RRset.
+   authoritative server is out-of-bailiwick [RFC7719] for the referring
+   resolver, then the SVCB record may not be retained for future
+   queries.  This can create a situation in which a given authoritative
+   server will be queried over encrypted transport for one name and over
+   unencrypted transport for another.  This is not the end of the world
+   (HTTPS has historically operated in this way, with the security
+   properties being attached to the reference), but is also not ideal.
+   In order to prevent this, resolvers which are also authoritative for
+   their own name SHOULD send SVCB glue records in the additional data
+   section so that they can be properly cached, and the TTL for these
+   SVCB records SHOULD match that of the corresponding NS records in the
+   same RRset.
 
-   [[OPEN ISSUE: Do people cache out-of-bailiwick DNSSEC-signed
-   records?]] [[OPEN ISSUE: How often is the case where
-   ns.example.example is not authoritative for itself?  Should we
-   encourage people to accept out-of-bailiwick responses in that case?]]
+   [[OPEN ISSUE: How often is the case where ns.example.example is not
+   authoritative for itself?  Should we encourage people to accept out-
+   of-bailiwick responses in that case?]]
 
 4.2.  Authenticating the Server
 
@@ -196,8 +200,14 @@ A example.com? ------------------------------------------->
        TLSA records) as mandatory.
 
    2.  Have the SVCB record indicate what kind(s) of authentication the
-       authoritative resolver supports, allowing the recursive to filter
-       out incompatible advertisements.
+       authoritative server supports, allowing the recursive to filter
+       out incompatible advertisements.  For instance, the SVCB record
+       could contain a key that stated that it only had a WebPKI
+       certificate, in which case the resolver could ignore that entry.
+
+   [[OPEN ISSUE: If we have the kind of advertisement indicated in (2)
+   above, is not necessary to have an MTI, but it might be desirable to
+   promote interoperability.]]
 
    One challenge with TLSA records in this context is that they may not
    be in the recursive resolver's cache at the time when it wants to
@@ -268,12 +278,12 @@ A www.example.example? ------------------------------------->
    The primary security property delivered by this mechanism is
    confidentiality of the query and response.  As long as (1) all
    queries in the resolution chain, including to the authoritative
-   resolver are encrypted and (2) all resolvers in the resolution chain
+   server are encrypted and (2) all resolvers in the resolution chain
    are trustworthy, then even an on-path attacker cannot discover the
    name being resolved or its response.  However, if either of these
    conditions is violated, then an attack is possible:
 
-   *  If the connection to the authoritative resolver is not encrypted,
+   *  If the connection to the authoritative server is not encrypted,
       then the request and response can be read directly.
 
    *  If one of the earlier connections is not encrypted, then the
@@ -386,6 +396,10 @@ A www.example.example? ------------------------------------->
    [QMIN]     Bortzmeyer, S., "DNS Query Name Minimisation to Improve
               Privacy", RFC 7816, DOI 10.17487/RFC7816, March 2016,
               <https://datatracker.ietf.org/doc/html/rfc7816>.
+
+   [REGISTRY] ICANN, "ICANN Registry Agreement", July 2017,
+              <https://newgtlds.icann.org/sites/default/files/
+              agreements/agreement-approved-31jul17-en.html#exhibitA.1>.
 
    [RFC4035]  Arends, R., Austein, R., Larson, M., Massey, D., and S.
               Rose, "Protocol Modifications for the DNS Security
