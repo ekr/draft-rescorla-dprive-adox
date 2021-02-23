@@ -175,7 +175,38 @@ using the procedures associated with the relevant protocol,
 
 # Security Considerations
 
-TODO Security
+The primary security property delivered by this mechanism is
+confidentiality of the query and response. As long as (1) All queries
+in the resolution chain, including to the authoritative resolver are
+encrypted and (2) All resolvers in the resolution chain are
+trustworthy, then even an on-path attacker cannot discover the
+name being resolved or its response. However, if either of these conditions
+is violated, then an attack is possible:
+
+- If the connection to the authoritative resolver is not encrypted,
+  then the request and response can be read directly.
+- If one of the earlier connections is not encrypted, then the
+  attacker can substitute their own NS records or strip SVCB
+  records from the additional_data, forcing the resolution back to unencrypted mode.
+- If one of the resolvers is untrustworthy, then they can
+  sending SVCB records or substitute their own NS records.
+
+Note: DNSSEC signing might mitigate some these issues, but it is
+undesirable to have a system which depends on universal DNSSEC.
+[[TODO: Tommy, can you analyze this?. I think NS aren't signed
+so basically it's hopeless]]
+
+An on-path attacker does, however, likely learn the identity of
+the authoritative server; if that server only serves a small
+number of domains then the attacker will learn information
+about what is being resolved.
+
+As a secondary property, this mechanism can provide some level
+of integrity for DNS responses, again under the condition that
+each resolver in the chain is trustworthy. By contrast,
+DNSSEC provides integrity even if the resolvers are untrustworthy.
+
+
 
 
 # IANA Considerations
