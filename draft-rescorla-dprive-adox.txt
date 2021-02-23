@@ -173,19 +173,72 @@ A example.com? ------------------------------------------->
    ns.example.invalid is not authoritative for itself?  Should we
    encourage people to accept out-of-bailiwick responses in that case?]]
 
-   TODO: - How is caching handled now for the IP addresses - Do you
-   apply it to other NS records? - You can't just allow later glue to
-   override earlier glue.
-
 4.2.  Authenticating the Server
 
    Recursive servers MUST authenticate the authoritative server using
    the procedures associated with the relevant protocol, [RFC6125] and
-   [RFC2818] for DoT and DoH respectively.
+   [RFC2818] for DoT and DoH respectively.  This is in principle
+   compatible with having the server authenticated either with the
+   WebPKI or with TLSA records [DANE], or both.  In order for this to
+   work properly, however, the recursive resolver must know at the time
+   it connects whether it will be willing to accept the authoritative
+   server's credentials.
+
+   This can be addressed in several ways:
+
+   1.  Require a particular form of authentication (e.g., the WebPKI or
+       TLSA records) as mandatory.
+
+   2.  Have the SVCB record indicate what kind(s) of authentication the
+       authoritative resolver supports, allowing the recursive to filter
+       out incompatible advertisements.
+
+   One challenge with TLSA records in this context is that they may not
+   be in the recursive resolver's cache at the time when it wants to
+   connect to the authoritative.  This can create added latency if the
+   recursive resolver must then first retrieve TLSA records for the
+   authoritative.  If we wish for servers to authenticate with DANE, we
+   will also probably want some mechanism to carry the TLSA records in
+   the TLS handshake, as, for instance defined in
+   [I-D.ietf-tls-dnssec-chain-extension].
+
+   [[OPEN ISSUE: Resolve this.]]
 
 5.  Security Considerations
 
-   TODO Security
+   The primary security property delivered by this mechanism is
+   confidentiality of the query and response.  As long as (1) All
+   queries in the resolution chain, including to the authoritative
+   resolver are encrypted and (2) All resolvers in the resolution chain
+   are trustworthy, then even an on-path attacker cannot discover the
+   name being resolved or its response.  However, if either of these
+   conditions is violated, then an attack is possible:
+
+   *  If the connection to the authoritative resolver is not encrypted,
+      then the request and response can be read directly.
+
+   *  If one of the earlier connections is not encrypted, then the
+      attacker can substitute their own NS records or strip SVCB records
+      from the additional_data, forcing the resolution back to
+      unencrypted mode.
+
+   *  If one of the resolvers is untrustworthy, then they can sending
+      SVCB records or substitute their own NS records.
+
+   Note: DNSSEC signing might mitigate some these issues, but it is
+   undesirable to have a system which depends on universal DNSSEC.
+   [[TODO: Tommy, can you analyze this?. I think NS aren't signed so
+   basically it's hopeless]]
+
+   An on-path attacker does, however, likely learn the identity of the
+   authoritative server; if that server only serves a small number of
+   domains then the attacker will learn information about what is being
+   resolved.
+
+   As a secondary property, this mechanism can provide some level of
+   integrity for DNS responses, again under the condition that each
+   resolver in the chain is trustworthy.  By contrast, DNSSEC provides
+   integrity even if the resolvers are untrustworthy.
 
 6.  IANA Considerations
 
@@ -194,6 +247,11 @@ A example.com? ------------------------------------------->
 7.  References
 
 7.1.  Normative References
+
+   [DANE]     Hoffman, P. and J. Schlyter, "The DNS-Based Authentication
+              of Named Entities (DANE) Transport Layer Security (TLS)
+              Protocol: TLSA", RFC 6698, DOI 10.17487/RFC6698, August
+              2012, <https://datatracker.ietf.org/doc/html/rfc6698>.
 
    [DOH]      Hoffman, P. and P. McManus, "DNS Queries over HTTPS
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
@@ -231,6 +289,14 @@ A example.com? ------------------------------------------->
               Internet-Draft, draft-ietf-dprive-dnsoquic-02, 22 February
               2021, <https://datatracker.ietf.org/doc/html/draft-ietf-
               dprive-dnsoquic-02.txt>.
+
+   [I-D.ietf-tls-dnssec-chain-extension]
+              Shore, M., Barnes, R., Huque, S., and W. Toorop, "A DANE
+              Record and DNSSEC Authentication Chain Extension for TLS",
+              Work in Progress, Internet-Draft, draft-ietf-tls-dnssec-
+              chain-extension-07, 21 March 2018,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
+              dnssec-chain-extension-07.txt>.
 
    [I-D.schwartz-svcb-dns]
               Schwartz, B., "Service Binding Mapping for DNS Servers",
