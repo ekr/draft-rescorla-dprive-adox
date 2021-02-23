@@ -190,6 +190,58 @@ defined in {{?I-D.ietf-tls-dnssec-chain-extension}}.
 
 [[OPEN ISSUE: Resolve this.]]
 
+# Example
+
+A complete example is shown below.
+
+~~~~
+Recursive  x.root-servers.org  ns.a.invalid         ns.example.invalid
+             (Auth. for .)     (Auth for .invalid)  (Auth for .example.invalid)
+
+<== TLS handshake ==>
+NS .invalid? ------->
+<- .invalid NS ns.op.invalid
+   ns.op.invalid A 198.51.100.1
+   _dns.ns.op.invalid SVCB alpn=dot
+
+
+<============ TLS handshake ===========>
+NS example.invalid? ------------------->
+<----- example.invalid NS ns.example.invalid
+       ns.example.invalid A 203.0.113.1
+       _dns.ns.example.invalid SVCB alpn=dot
+
+<====================== TLS Handshake ======================>
+A www.example.invalid? ------------------------------------->
+<---------------------------- www.example.invalid A 192.0.2.1
+~~~~
+
+In this case, the recursive wants to resolve www.example.invalid.
+
+Resolution proceeds in three phases.
+
+Initially, the recursive connects to the root server. We assume that
+the recursive knows that the root server is able to do DoT, either
+because it has been preconfigured with his information or because it
+has connected to that root server before. It performs an NS query for
+".invalid" (we are assuming QMIN) and receives:
+
+- An NS record pointing to ns.op.invalid
+- A glue A record for ns.op.invalid = 198.51.100.1
+- A SVCB record stating that ns.op.invalid speaks DoT
+
+Next, the recursive resolver forms a TLS connection to ns.op.invalid
+and requests an NS record for example.invalid. It receives:
+
+- An NS record pointing to ns.example.invalid
+- A glue A record for ns.example.invalid = 203.0.113.1
+- A SVCB record stating that ns.example.invalid speaks DoT
+
+Finally, the recursive resolver forms a TLS connection to
+ns.example.invalid and request an A record for www.example.invalid and
+receives the A record of 192.0.2.1.
+
+
 # Security Considerations {#security}
 
 The primary security property delivered by this mechanism is
