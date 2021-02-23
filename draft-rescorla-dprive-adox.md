@@ -45,8 +45,12 @@ normative:
   RFC2119:
 
 informative:
-
-
+  REGISTRY:
+       title: ICANN Registry Agreement
+       date: July 2017
+       author:
+         org: ICANN
+       target: https://newgtlds.icann.org/sites/default/files/agreements/agreement-approved-31jul17-en.html#exhibitA.1
 
 --- abstract
 
@@ -62,7 +66,7 @@ over encrypted transport {{!DOH=RFC8484}} {{!DOT=RFC7858}}
 {{?DOQ=I-D.ietf-dprive-dnsoquic}}. However, there is no scalable
 way for a recursive resolver to know that a given authoritative
 resolver supports encrypted transport, which inhibits the deployment
-of encryped DNS for queries from recursive resolvers. This specification
+of encrypted DNS for queries from recursive resolvers. This specification
 defines a mechanism for carrying that signal, using the
 DNS SVCB {{?SVCB=I-D.ietf-dnsop-svcb-https}} record.
 
@@ -81,7 +85,7 @@ The mechanism defined in this document works by using the DNS SVCB
 recursive resolver can obtain these records in two distinct ways:
 
 - In the additional data block of the response that referred
-  the recursive to the target authoritative resolver.
+  the recursive to the target authoritative server.
 - By directly resolving a SVCB query for the target authoritative
   resolver.
 
@@ -114,10 +118,16 @@ IP address for that server. This additional record is the only difference
 from the current situation, and allows the recursive resolver to know that
 it can reach ns.example.example over encrypted transport.
 
+Note: SVCB is not presently permitted at the root {{REGISTRY}}.
+In the interim, recursive resolvers may be preconfigured with
+the TLS status of the resolvers for TLDs.
+[[OPEN ISSUE: Do we want to invent some other sentinel as a temporary
+measure?]]
+
 
 # Use of SVCB Records to Signal Encrypted Transport
 
-Any given authoritative resolver name can have one or more DNS Server
+Any given authoritative server name can have one or more DNS Server
 SVCB records, as defined in {{?I-D.schwartz-svcb-dns}}.
 
 For instance, the following pair of records would indicate that
@@ -141,10 +151,10 @@ SHOULD try all of them before declaring failure.
 ## Caching and lifetime
 
 Note that in the common case where the name of the target
-authoritative resolver is out-of-bailiwick {{?RFC7719}} for the
+authoritative server is out-of-bailiwick {{?RFC7719}} for the
 referring resolver, then the SVCB record may not be retained
 for future queries. This can create a situation in which a given
-authoritative resolver will be queried over encrypted transport for
+authoritative server will be queried over encrypted transport for
 one name and over unencrypted transport for another. This is not the
 end of the world (HTTPS has historically operated in this way, with
 the security properties being attached to the reference), but is also
@@ -154,7 +164,6 @@ in the additional data section so that they can be properly cached,
 and the TTL for these SVCB records SHOULD match that of the
 corresponding NS records in the same RRset.
 
-[[OPEN ISSUE: Do people cache out-of-bailiwick DNSSEC-signed records?]]
 [[OPEN ISSUE: How often is the case where ns.example.example is not
 authoritative for itself? Should we encourage people to accept out-of-bailiwick
 responses in that case?]]
@@ -176,8 +185,16 @@ This can be addressed in several ways:
 1. Require a particular form of authentication (e.g., the WebPKI or
    TLSA records) as mandatory.
 1. Have the SVCB record indicate what kind(s) of authentication the
-   authoritative resolver supports, allowing the recursive to filter
-   out incompatible advertisements.
+   authoritative server supports, allowing the recursive to filter
+   out incompatible advertisements. For instance, the SVCB record
+   could contain a key that stated that it only had a WebPKI
+   certificate, in which case the resolver could ignore that
+   entry.
+
+
+[[OPEN ISSUE: If we have the kind of advertisement indicated in (2)
+above, is not necessary to have an MTI, but it might be desirable
+to promote interoperability.]]
 
 One challenge with TLSA records in this context is that they may
 not be in the recursive resolver's cache at the time when it wants
@@ -246,13 +263,13 @@ receives the A record of 192.0.2.1.
 
 The primary security property delivered by this mechanism is
 confidentiality of the query and response. As long as (1) all queries
-in the resolution chain, including to the authoritative resolver are
+in the resolution chain, including to the authoritative server are
 encrypted and (2) all resolvers in the resolution chain are
 trustworthy, then even an on-path attacker cannot discover the
 name being resolved or its response. However, if either of these conditions
 is violated, then an attack is possible:
 
-- If the connection to the authoritative resolver is not encrypted,
+- If the connection to the authoritative server is not encrypted,
   then the request and response can be read directly.
 - If one of the earlier connections is not encrypted, then the
   attacker can substitute their own NS records.
