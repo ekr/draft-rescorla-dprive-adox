@@ -1,0 +1,504 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2021-02-25T00:29:00.536792+00:00",
+  "repo": "ekr/draft-rescorla-dprive-adox",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4MDMzOTI0",
+      "title": "Update SVCB format",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/1",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-02-23T00:12:27Z",
+      "updatedAt": "2021-02-23T00:34:13Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "46ba9bba0f8f4d4c087226dde7c1e8156a0c2abb",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "tfpauly-patch-1",
+      "headRefOid": "ac4af506c3e3ce525333ce04b1f9d29e8b896035",
+      "closedAt": "2021-02-23T00:34:13Z",
+      "mergedAt": "2021-02-23T00:34:13Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "2dc1711140c09ff60c103382dd60198c49a05f60"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk1OTAxNDg4",
+          "commit": {
+            "abbreviatedOid": "ac4af50"
+          },
+          "author": "ekr",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-02-23T00:18:51Z",
+          "updatedAt": "2021-02-23T00:18:51Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "I note you gave these the same priority. Should we change the text above?",
+              "createdAt": "2021-02-23T00:18:51Z",
+              "updatedAt": "2021-02-23T00:18:51Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4MDQ5MTcz",
+      "title": "Section on authenticating",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/2",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-02-23T00:48:08Z",
+      "updatedAt": "2021-02-23T04:07:18Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "2dc1711140c09ff60c103382dd60198c49a05f60",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "authenticating",
+      "headRefOid": "29c4f2ffe311613c26b9ea60af469a684c5c3841",
+      "closedAt": "2021-02-23T04:07:17Z",
+      "mergedAt": "2021-02-23T04:07:17Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "61595fe925ab6f280a4af2bf41f34a6419a76526"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk1OTc1ODY1",
+          "commit": {
+            "abbreviatedOid": "29c4f2f"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T03:41:06Z",
+          "updatedAt": "2021-02-23T03:41:06Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4MDU2MTM2",
+      "title": "First stab at security considerations",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/3",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-02-23T01:07:51Z",
+      "updatedAt": "2021-02-23T04:06:56Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "2dc1711140c09ff60c103382dd60198c49a05f60",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "seccons",
+      "headRefOid": "9e8798f0d494c67740ba23c3c0ede133636a70f5",
+      "closedAt": "2021-02-23T04:06:56Z",
+      "mergedAt": "2021-02-23T04:06:56Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "07fc6c54f68b735c442148e9733ffadf319679a4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk1OTczNjU1",
+          "commit": {
+            "abbreviatedOid": "e09643b"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T03:32:20Z",
+          "updatedAt": "2021-02-23T03:40:13Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Should this be:\r\n\r\n```suggestion\r\nencrypted and (2) All resolvers in the resolution chain are\r\n```\r\n\r\nOr does the markdown handle numbers in an automagic way?",
+              "createdAt": "2021-02-23T03:32:20Z",
+              "updatedAt": "2021-02-23T04:06:35Z"
+            },
+            {
+              "originalPosition": 24,
+              "body": "Yeah, so RFC 4035 say:\r\n```\r\n   The NS RRset that appears at the zone apex name MUST be signed, but\r\n   the NS RRsets that appear at delegation points (that is, the NS\r\n   RRsets in the parent zone that delegate the name to the child zone's\r\n   name servers) MUST NOT be signed.  Glue address RRsets associated\r\n   with delegations MUST NOT be signed.\r\n```\r\n\r\nSo, `com` won't have a DNSSEC-signed NS record for `example.com`, but `example.com` _could_ have a DNSSEC-signed version.",
+              "createdAt": "2021-02-23T03:40:07Z",
+              "updatedAt": "2021-02-23T04:06:35Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk1OTgyMjI5",
+          "commit": {
+            "abbreviatedOid": "e09643b"
+          },
+          "author": "ekr",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-02-23T04:04:22Z",
+          "updatedAt": "2021-02-23T04:06:40Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Not these. Just bulleted lists.",
+              "createdAt": "2021-02-23T04:04:22Z",
+              "updatedAt": "2021-02-23T04:06:40Z"
+            },
+            {
+              "originalPosition": 24,
+              "body": "So it seems like the recursive resolver is going to rely on the one in the parent, right? Which means that it won't help. Do we need special instructions that the recursive needs to accept an unsigned SVCB?\r\n\r\n",
+              "createdAt": "2021-02-23T04:06:24Z",
+              "updatedAt": "2021-02-23T04:06:40Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4NTc1MzU5",
+      "title": "Attempts to clarify.",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/4",
+      "state": "MERGED",
+      "author": "chris-wood",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "And add HSTS proposal. ",
+      "createdAt": "2021-02-23T16:18:22Z",
+      "updatedAt": "2021-02-23T18:13:22Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "61595fe925ab6f280a4af2bf41f34a6419a76526",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "caw/clarifications",
+      "headRefOid": "e2044b092a742cb1d312e7f7d73c9e07a8cb30ad",
+      "closedAt": "2021-02-23T18:13:22Z",
+      "mergedAt": "2021-02-23T18:13:22Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "72d94c30176f461788258438b6e5f981e31d4a21"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2NjM3MjU1",
+          "commit": {
+            "abbreviatedOid": "e2044b0"
+          },
+          "author": "ekr",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T18:03:42Z",
+          "updatedAt": "2021-02-23T18:13:07Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "Oops.",
+              "createdAt": "2021-02-23T18:03:42Z",
+              "updatedAt": "2021-02-23T18:13:07Z"
+            },
+            {
+              "originalPosition": 69,
+              "body": "I don't think this DNSSEC point is right, because the text above would require encrypted transport.",
+              "createdAt": "2021-02-23T18:06:18Z",
+              "updatedAt": "2021-02-23T18:13:07Z"
+            },
+            {
+              "originalPosition": 91,
+              "body": "Nice",
+              "createdAt": "2021-02-23T18:11:53Z",
+              "updatedAt": "2021-02-23T18:13:07Z"
+            },
+            {
+              "originalPosition": 133,
+              "body": "I'm gonna merge this, but I don't think it's *quite* right. Will fix it in a followup PR.",
+              "createdAt": "2021-02-23T18:12:57Z",
+              "updatedAt": "2021-02-23T18:13:07Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4NjY3MDMw",
+      "title": "Clarify DNSSEC protection",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/5",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-02-23T18:31:58Z",
+      "updatedAt": "2021-02-23T19:09:50Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "72d94c30176f461788258438b6e5f981e31d4a21",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "dnssec2",
+      "headRefOid": "f04b3efe3d416f7712eee540d45be9994013da70",
+      "closedAt": "2021-02-23T19:09:50Z",
+      "mergedAt": "2021-02-23T19:09:50Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "8936f1c2a613041c8093565f0a311d604ddc9982"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2NjgzOTkw",
+          "commit": {
+            "abbreviatedOid": "f04b3ef"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T18:48:28Z",
+          "updatedAt": "2021-02-23T18:48:28Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4NzAzODA3",
+      "title": "Example",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/6",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-02-23T19:34:50Z",
+      "updatedAt": "2021-02-23T20:28:12Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "8936f1c2a613041c8093565f0a311d604ddc9982",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "example",
+      "headRefOid": "bba0c6f748bf43c4aebd0a350ddd93a6f1b650d8",
+      "closedAt": "2021-02-23T20:28:12Z",
+      "mergedAt": "2021-02-23T20:28:12Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "0d3b05b51fcbba0794078d888c0570bc8b401126"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2NzM5NDUx",
+          "commit": {
+            "abbreviatedOid": "bba0c6f"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "\u2764\ufe0f ",
+          "createdAt": "2021-02-23T19:53:29Z",
+          "updatedAt": "2021-02-23T19:53:29Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4ODExMjkz",
+      "title": "Ben Schwartz's comments",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/7",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-02-23T22:54:37Z",
+      "updatedAt": "2021-02-23T23:29:22Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "280e62d22ef974b793964d7efcc7f580f602b819",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "bemasc_comments",
+      "headRefOid": "d6f201d4eb52b9075998ac9f74f7c7dc9e490bd4",
+      "closedAt": "2021-02-23T23:29:22Z",
+      "mergedAt": "2021-02-23T23:29:22Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "e3313e48a9e787dbaf2a14859f56388791827ce6"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2ODkyMTAw",
+          "commit": {
+            "abbreviatedOid": "d6f201d"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T23:22:36Z",
+          "updatedAt": "2021-02-23T23:22:36Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4ODEyNTcy",
+      "title": "example.example would be cool",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/8",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-02-23T22:57:25Z",
+      "updatedAt": "2021-02-23T23:25:38Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "280e62d22ef974b793964d7efcc7f580f602b819",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "invalid",
+      "headRefOid": "ebc835817472e3f69ce7259659c2ece3705601ef",
+      "closedAt": "2021-02-23T23:25:38Z",
+      "mergedAt": "2021-02-23T23:25:38Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "2b7ba02d68b3f2caf910fc1c28f8a4a507b2e4d2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2ODkwNzc4",
+          "commit": {
+            "abbreviatedOid": "ebc8358"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T23:21:55Z",
+          "updatedAt": "2021-02-23T23:21:55Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4ODQyOTE0",
+      "title": "Don't use the \".\" for _dns SVCB records",
+      "url": "https://github.com/ekr/draft-rescorla-dprive-adox/pull/9",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Based on Ben's feedback",
+      "createdAt": "2021-02-23T23:56:03Z",
+      "updatedAt": "2021-02-23T23:57:07Z",
+      "baseRepository": "ekr/draft-rescorla-dprive-adox",
+      "baseRefName": "main",
+      "baseRefOid": "e3313e48a9e787dbaf2a14859f56388791827ce6",
+      "headRepository": "ekr/draft-rescorla-dprive-adox",
+      "headRefName": "tfpauly-patch-2",
+      "headRefOid": "374eb60185d5fc58fb36dc159ea8cf196e5b5f7c",
+      "closedAt": "2021-02-23T23:57:06Z",
+      "mergedAt": "2021-02-23T23:57:06Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "4402dd9257c99d845308da947cad8ca69983dae2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2OTEwNjI0",
+          "commit": {
+            "abbreviatedOid": "374eb60"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T23:57:02Z",
+          "updatedAt": "2021-02-23T23:57:02Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}
